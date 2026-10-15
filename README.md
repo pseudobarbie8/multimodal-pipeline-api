@@ -22,16 +22,16 @@ uvicorn app.main:app --reload
 | Route | Input | Output |
 |---|---|---|
 | `POST /caption` | image | caption text |
-| `POST /summarize-audio` | audio | transcript + summary |
 | `POST /caption/batch` | several images | list of captions |
+| `POST /summarize-audio` | audio | transcript + summary |
 | `GET /health` | - | status |
 
 ## Stack
 
-FastAPI, Whisper for transcription, a small vision-language model for captions, pytest, GitHub Actions for CI.
+FastAPI, BLIP for captions, Whisper (tiny) for transcription, DistilBART for summaries, all through Hugging Face `transformers`. pytest and GitHub Actions for CI.
 
-Run tests: `pytest`
+Tests: `pytest` (they cover routing only; models are not downloaded)
 
-First request is slow while models load. A GPU helps but isn't required for small models.
+Models download on the first request to each endpoint, so that request is slow. Audio decoding needs `ffmpeg` (included in the Docker image).
 
 MIT
